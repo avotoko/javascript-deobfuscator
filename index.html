@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 	let d = document;
 	let {decode} = window["sd-decoder"];
 	let local = location.protocol === "file:",
-		opts = {"brute": false, "eval-atob": false, "eval-assign": false, "remove-unreferenced": false, "l-debug": false};
+		opts = {"brute": false, "eval-atob": false, "eval-assign - Unreliable": false, "remove-unreferenced": false, "l-debug": false};
 	let container = document.getElementById("opts");
 	Object.keys(opts).forEach(k=>{
 		if (k.startsWith("l-")){
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 			k = k.substring(2);
 		}
 		let e = document.createElement("input");
-		e.type = "checkbox", e.id = k, e.checked = opts[k];
+		e.type = "checkbox", e.id = k.split(" ")[0], e.checked = opts[k];
 		container.appendChild(e);
 		e = document.createElement("label");
 		e.for = k, e.textContent = k;
