@@ -28,6 +28,18 @@ button {
 	margin-top: 5px;
 	font-size: inherit;
 }
+a.button {
+	text-decoration: none;
+	font-size: inherit;
+	background-color: #EEEEEE;
+	border:  solid thin;
+	padding: 0 0.3em;
+	cursor: pointer;
+	color: black;
+}
+a.button:hover {
+	background-color: #CCCCCC;
+}
 .hide {
 	display: none;
 }
@@ -56,6 +68,7 @@ Input (Paste text or drop file):<br />
 <textarea id="input" rows="14" spellcheck="false"></textarea><br />
 <button id="run">Deobfuscate</button>
 <button id="copy">Copy output to clipboard</button>
+<a id="download" class="button" download="output.js">Download output</a>
 <button id="clear">Clear output</button>
 <button id="runCode" class="hide">Run code in vm(iframe)</button>
 </div>
@@ -79,7 +92,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 	let d = document;
 	let {decode} = window["sd-decoder"];
 	let local = location.protocol === "file:",
-		opts = {"brute": false, "eval-atob": false, "eval-assign - Unreliable": false, "remove-unreferenced": false, "l-debug": false};
+		opts = {"brute": false, "eval-atob": false, "eval-assign - Unreliable": false, "remove-unreferenced": false, "beta":false, "l-debug": false, "l-print-delived-expander":false, "l-print-scope":false, "l-suppress":false};
 	let container = document.getElementById("opts");
 	Object.keys(opts).forEach(k=>{
 		if (k.startsWith("l-")){
@@ -131,10 +144,6 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 					opts.remove = opts.remove || "";
 					opts.remove += "," + e.id.substring(7);
 				}
-				else if (["eval-assign"].includes(e.id)){
-					opts.extra = opts.extra || "";
-					opts.extra += "," + e.id;
-				}
 				else {
 					opts[e.id] = true;
 				}
@@ -164,6 +173,11 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 		output.select();
 		document.execCommand("copy");
 		output.selectionEnd = output.selectionStart;
+	});
+	d.getElementById("download").addEventListener("click", function(ev){
+		let a = ev.target;
+		console.log(a);
+		a.href = URL.createObjectURL(new Blob([output.value],{type:"application/javascript"}));
 	});
 	d.getElementById("clear").addEventListener("click", function(){
 		output.value = "";
