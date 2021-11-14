@@ -77,12 +77,6 @@ Output:<br />
 <textarea id="output" rows="13" spellcheck="false"></textarea><br />
 </div>
 <script>
-function formatElapsed(n){
-	let ms = n % 1000, s, m;
-	n = (n - ms) / 1000, s = n % 60, m = (n - s) /60;
-	return m + ":" + ("0" + s).slice(-2) + "." + ("00" + ms).slice(-3);
-}
-
 if (location.protocol !== "file:"){
 	let e = document.createElement("iframe");
 	e.src = "https://avotoko.blogspot.com/2021/10/i-want-to-know-number-of-accesses.html#note";
@@ -157,8 +151,7 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 		console.log("using options:", opts);
 		setTimeout(function(){
 			try {
-				let start = Date.now(), res = decode(code, opts), elapsed = Date.now() - start;
-				console.log("# Elapsed:", formatElapsed(elapsed));
+				let res = decode(code, opts);
 				output.value = res.modified > 0 ? res.code : "Unable to deobfuscate";
 				d.querySelectorAll(".jsdfe-vm").forEach(e=>e.remove());
 			}
