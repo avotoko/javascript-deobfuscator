@@ -68,8 +68,8 @@ a.button:hover {
 Input (Paste text or drop file):<br />
 <textarea id="input" rows="14" spellcheck="false"></textarea><br />
 <button id="run">Deobfuscate</button>
-<button id="copy">Copy output to clipboard</button>
 <a id="download" class="button" download="output.js">Download output</a>
+<button id="copy">Copy output to clipboard</button>
 <button id="clear">Clear output</button>
 <button id="runCode" class="hide">Run code in vm(iframe)</button>
 </div>
@@ -135,7 +135,7 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 		let opts = {}, code = input.value;
 		document.querySelectorAll('#opts > input[type="checkbox"]').forEach(e=>{
 			if (e.checked){
-				if (e.id.startsWith("remove-")){
+				if (e.id.startsWith("remove-") && e.id !== "remove-ex"){
 					opts.remove = opts.remove || "";
 					opts.remove += "," + e.id.substring(7);
 				}
