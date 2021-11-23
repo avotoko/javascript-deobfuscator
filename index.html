@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 	let d = document;
 	let {decode} = window["sd-decoder"];
 	let local = location.protocol === "file:",
-		opts = {"brute": false, "eval-atob": false, "eval-assign [*]": false, "remove-unreferenced [*]": false, "string-expander-c-remove-extra [*]":false, "beta":false, "l-debug": false, "l-print-delived-expander":false, "l-print-scope":false, "l-suppress":false};
+		opts = {"brute": false, "eval-atob": false, "eval-assign [*]": false, "remove-unreferenced [*]": false, "jscrambler-remove-extra [*]":false, "beta":false, "l-debug": false, "l-print-delived-expander":false, "l-print-scope":false, "l-suppress":false};
 	let container = document.getElementById("opts");
 	Object.keys(opts).forEach(k=>{
 		if (k.startsWith("l-")){
