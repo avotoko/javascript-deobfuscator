@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 	let d = document;
 	let {decode} = window["sd-decoder"];
 	let local = location.protocol === "file:",
-		opts = {"brute": false, "eval-atob": false, "eval-assign [*]": false, "remove-unreferenced [*]": false, "jscrambler-remove-extra [*]":false, "beta":false, "l-debug": false, "l-print-delived-expander":false, "l-print-scope":false, "l-suppress":false};
+		opts = {"brute": false, "eval-atob": false, "eval-assign [*]": false, "remove-unreferenced [*]": false, "exclude-obfuscator-io":false, "jscrambler-remove-extra [*]":false, "beta":false, "l-debug": false, "l-profiler":false, "l-print-delived-expander":false, "l-print-scope":false, "l-suppress":false};
 	let container = document.getElementById("opts");
 	Object.keys(opts).forEach(k=>{
 		if (k.startsWith("l-")){
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 var b; // 'remove-unreferenced' remove this statement.
 a = "Hey", a += " gays!"; // 'eval-assign' evaluate this assignment expression.
 console.log(a); // 'eval-assign' will replace variables with literals if possible.
-// deobfuscate followings.
+// deobfuscate obfuscator.io. 'exclude-obfuscator-io' will not detect obfuscator.io. It speeds up the analysis of other obfuscators.
 (function(_0x7f3edf,_0x62db19){var _0x3ea4da=_0x4913,_0x2b5775=_0x7f3edf();while(!![]){try{var _0x25475e=parseInt(_0x3ea4da(0x100))/0x1*(-parseInt(_0x3ea4da(0x103))/0x2)+parseInt(_0x3ea4da(0x107))/0x3*(-parseInt(_0x3ea4da(0x106))/0x4)+-parseInt(_0x3ea4da(0x10a))/0x5*(parseInt(_0x3ea4da(0x109))/0x6)+parseInt(_0x3ea4da(0x104))/0x7*(parseInt(_0x3ea4da(0x10b))/0x8)+-parseInt(_0x3ea4da(0x102))/0x9+parseInt(_0x3ea4da(0x105))/0xa*(-parseInt(_0x3ea4da(0x101))/0xb)+-parseInt(_0x3ea4da(0x108))/0xc*(-parseInt(_0x3ea4da(0x10c))/0xd);if(_0x25475e===_0x62db19)break;else _0x2b5775['push'](_0x2b5775['shift']());}catch(_0x11878b){_0x2b5775['push'](_0x2b5775['shift']());}}}(_0x1f46,0xce4d4));function hi(){var _0x44d8d2=_0x4913;console['log'](_0x44d8d2(0x10d));}function _0x4913(_0x42a11e,_0x28997d){var _0x1f46da=_0x1f46();return _0x4913=function(_0x491324,_0x5d00ae){_0x491324=_0x491324-0x100;var _0x3b893a=_0x1f46da[_0x491324];return _0x3b893a;},_0x4913(_0x42a11e,_0x28997d);}hi();function _0x1f46(){var _0x10a357=['249025SGjcqe','24OVDaZa','13229021IDBuND','Hello\x20World!','307kbyHvP','55mToEHJ','12390849AzERbI','1062ZWnvKY','3285268vpUaeV','2257250cenXBc','4zdkifI','2692809xIonWD','36scJefO','6jLhlFK'];_0x1f46=function(){return _0x10a357;};return _0x1f46();}`;
 	input.addEventListener("dragover", function(ev){
 		ev.preventDefault();
@@ -135,7 +135,11 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 		let opts = {}, code = input.value;
 		document.querySelectorAll('#opts > input[type="checkbox"]').forEach(e=>{
 			if (e.checked){
-				if (e.id.startsWith("remove-") && e.id !== "remove-ex"){
+				if (e.id.startsWith("exclude-")){
+					opts.exclude = opts.exclude || "";
+					opts.exclude += "," + e.id.substring(8);
+				}
+				else if (e.id.startsWith("remove-") && e.id !== "remove-ex"){
 					opts.remove = opts.remove || "";
 					opts.remove += "," + e.id.substring(7);
 				}
