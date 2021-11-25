@@ -87,15 +87,21 @@ document.addEventListener("DOMContentLoaded", ()=>{
 	let d = document;
 	let {decode} = window["sd-decoder"];
 	let local = location.protocol === "file:",
-		opts = {"brute": false, "eval-atob": false, "eval-assign [*]": false, "remove-unreferenced [*]": false, "exclude-obfuscator-io":false, "jscrambler-remove-extra [*]":false, "beta":false, "l-debug": false, "l-profiler":false, "l-print-delived-expander":false, "l-print-scope":false, "l-suppress":false};
+		opts = {"eval-atob": false, "eval-assign [*]": false, "remove-unreferenced [*]": false, "jscrambler-remove-extra [*]":false, "exclude-obfuscator-io":false, "beta":false, "po-allowReturnOutsideFunction":false, "brute": false, "l-debug": false, "l-profiler":false, "l-print-delived-expander":false, "l-print-scope":false, "l-suppress":false};
 	let container = document.getElementById("opts");
 	Object.keys(opts).forEach(k=>{
+		let classList = [];
 		if (k.startsWith("l-")){
 			if (! local){ return; }
 			k = k.substring(2);
 		}
+		else if (k.startsWith("po-")){
+			k = k.substring(3);
+			classList.push("parser-option");
+		}
 		let e = document.createElement("input");
 		e.type = "checkbox", e.id = k.split(" ")[0], e.checked = opts[k];
+		classList.length >  0 && e.classList.add(...classList);
 		container.appendChild(e);
 		e = document.createElement("label");
 		e.for = k, e.textContent = k;
@@ -135,7 +141,11 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 		let opts = {}, code = input.value;
 		document.querySelectorAll('#opts > input[type="checkbox"]').forEach(e=>{
 			if (e.checked){
-				if (e.id.startsWith("exclude-")){
+				if (e.classList.contains("parser-option")){
+					opts["parser-option"] = opts["parser-option"] || "";
+					opts["parser-option"] += "," + e.id;
+				}
+				else if (e.id.startsWith("exclude-")){
 					opts.exclude = opts.exclude || "";
 					opts.exclude += "," + e.id.substring(8);
 				}
