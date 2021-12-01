@@ -87,24 +87,33 @@ document.addEventListener("DOMContentLoaded", ()=>{
 	let d = document;
 	let {decode} = window["sd-decoder"];
 	let local = location.protocol === "file:",
-		opts = {"eval-atob": false, "eval-assign [*]": false, "remove-unreferenced [*]": false, "jscrambler-remove-extra [*]":false, "exclude-obfuscator-io":false, "beta":false, "po-allowReturnOutsideFunction":false, "brute": false, "l-debug": false, "l-profiler":false, "l-print-delived-expander":false, "l-print-scope":false, "l-suppress":false};
+		opts = [
+			{ name: "eval-atob", title: "Evaluate atob(...) as string" },
+			{ name: "eval-assign", label: "eval-assign [*]", title: "Evaluate assignment expression and replace variables with values if possible" },
+			{ name: "remove", arg: "unreferenced", label: "remove-unreferenced [*]", title: "Remove declarations of unreferenced variables" },
+			{ name: "jscrambler-remove-extra", title: "remove meta-code of jscrambler" },
+			{ name: "exclude", arg: "obfuscator-io", title: "don't detect obfuscator.io, speed up parsing of large obfuscated scripts other than obfuscator.io" },
+			{ name: "beta", title: "there may or may not be a difference in output" },
+			{ name: "obfuscator-io-ignore-uri-malformed-error" },
+			{ name: "parser-option", arg: "allowReturnOutsideFunction", label: "allowReturnOutsideFunction", title: "babel parser option" },
+			{ name: "brute", title: "use when instructed to do so by console output" },
+			{ name: "debug", debug: true },
+			{ name: "profiler", debug: true },
+			{ name: "print-delived-expander", debug: true },
+			{ name: "print-scope", debug: true },
+			{ name: "suppress", debug: true },
+		];
 	let container = document.getElementById("opts");
-	Object.keys(opts).forEach(k=>{
-		let classList = [];
-		if (k.startsWith("l-")){
-			if (! local){ return; }
-			k = k.substring(2);
-		}
-		else if (k.startsWith("po-")){
-			k = k.substring(3);
-			classList.push("parser-option");
-		}
+	opts.forEach(opt=>{
+		if (opt.debug && ! local){ return; }
+		let classList = [], id = opt.arg ? opt.name + "-" + opt.arg : opt.name,
+			label = opt.label || id;
 		let e = document.createElement("input");
-		e.type = "checkbox", e.id = k.split(" ")[0], e.checked = opts[k];
+		e.type = "checkbox", e.opt = opt, e.id = id, e.checked = !!opt.checked;
 		classList.length >  0 && e.classList.add(...classList);
 		container.appendChild(e);
 		e = document.createElement("label");
-		e.for = k, e.textContent = k;
+		e.for = id, e.textContent = label, e.title = opt.title || id;
 		container.appendChild(e);
 	});
 	if (local){
@@ -141,20 +150,13 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 		let opts = {}, code = input.value;
 		document.querySelectorAll('#opts > input[type="checkbox"]').forEach(e=>{
 			if (e.checked){
-				if (e.classList.contains("parser-option")){
-					opts["parser-option"] = opts["parser-option"] || "";
-					opts["parser-option"] += "," + e.id;
-				}
-				else if (e.id.startsWith("exclude-")){
-					opts.exclude = opts.exclude || "";
-					opts.exclude += "," + e.id.substring(8);
-				}
-				else if (e.id.startsWith("remove-") && e.id !== "remove-ex"){
-					opts.remove = opts.remove || "";
-					opts.remove += "," + e.id.substring(7);
+				const opt = e.opt;
+				if (opt.arg){
+					opts[opt.name] = opts[opt.name] || "";
+					opts[opt.name] += "," + opt.arg;
 				}
 				else {
-					opts[e.id] = true;
+					opts[opt.name] = true;
 				}
 			}
 		});
