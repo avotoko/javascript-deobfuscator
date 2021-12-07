@@ -90,8 +90,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 		opts = [
 			{ name: "eval-atob", title: "Evaluate atob(...) as string" },
 			{ name: "eval-assign", label: "eval-assign [*]", title: "Evaluate assignment expression and replace variables with values if possible" },
-			{ name: "remove", arg: "unreferenced", label: "remove-unreferenced [*]", title: "Remove declarations of unreferenced variables" },
-			{ name: "jscrambler-remove-extra", title: "remove meta-code of jscrambler" },
+			{ name: "remove-extra", label: "remove-extra [*]", title: "Remove metacode for obfuscator.io and jscrambler" },
 			{ name: "exclude", arg: "obfuscator-io", title: "don't detect obfuscator.io, speed up parsing of large obfuscated scripts other than obfuscator.io" },
 			{ name: "beta", title: "there may or may not be a difference in output" },
 			{ name: "obfuscator-io-ignore-uri-malformed-error" },
@@ -124,7 +123,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
 	});
 	let input = d.getElementById("input"), output = d.getElementById("output");
 	input.value = `var a = atob("aGVsbG8="); // 'eval-atob' replaces the right hand with the evaluated value.
-var b; // 'remove-unreferenced' remove this statement.
 a = "Hey", a += " gays!"; // 'eval-assign' evaluate this assignment expression.
 console.log(a); // 'eval-assign' will replace variables with literals if possible.
 // deobfuscate obfuscator.io. 'exclude-obfuscator-io' will not detect obfuscator.io. It speeds up the analysis of other obfuscators.
