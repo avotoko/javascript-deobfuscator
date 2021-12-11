@@ -95,20 +95,19 @@ document.addEventListener("DOMContentLoaded", ()=>{
 			{ name: "beta", title: "there may or may not be a difference in output" },
 			{ name: "obfuscator-io-ignore-uri-malformed-error" },
 			{ name: "parser-option", arg: "allowReturnOutsideFunction", label: "allowReturnOutsideFunction", title: "babel parser option" },
+			{ name: "parser-option", arg: "sourceType=module", label: "sourceType=module", title: "babel parser option" },
 			{ name: "brute", title: "use when instructed to do so by console output" },
-			{ name: "debug", debug: true },
-			{ name: "profiler", debug: true },
-			{ name: "print-delived-expander", debug: true },
-			{ name: "print-scope", debug: true },
-			{ name: "suppress", debug: true },
 		];
 	let container = document.getElementById("opts");
 	opts.forEach(opt=>{
-		if (opt.debug && ! local){ return; }
 		let classList = [], id = opt.arg ? opt.name + "-" + opt.arg : opt.name,
-			label = opt.label || id;
+			label = opt.label || id, type = opt.type || "checkbox";
 		let e = document.createElement("input");
-		e.type = "checkbox", e.opt = opt, e.id = id, e.checked = !!opt.checked;
+		e.type = type, e.opt = opt, e.id = id;
+		switch (type){
+			case "checkbox": e.checked = !!opt.checked; break;
+			case "text": e.style.width = "2em"; opt.value && (e.value = opt.value); break;
+		}
 		classList.length >  0 && e.classList.add(...classList);
 		container.appendChild(e);
 		e = document.createElement("label");
@@ -146,15 +145,22 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 	});
 	d.getElementById("run").addEventListener("click", function(){
 		let opts = {}, code = input.value;
-		document.querySelectorAll('#opts > input[type="checkbox"]').forEach(e=>{
-			if (e.checked){
-				const opt = e.opt;
-				if (opt.arg){
-					opts[opt.name] = opts[opt.name] || "";
-					opts[opt.name] += "," + opt.arg;
+		document.querySelectorAll('#opts > input').forEach(e=>{
+			const opt = e.opt;
+			if (e.type === "checkbox"){
+				if (e.checked){
+					if (opt.arg){
+						opts[opt.name] = opts[opt.name] || "";
+						opts[opt.name] += "," + opt.arg;
+					}
+					else {
+						opts[opt.name] = true;
+					}
 				}
-				else {
-					opts[opt.name] = true;
+			}
+			else if (e.type === "text"){
+				if (e.value){
+					opts[opt.name] = e.value;
 				}
 			}
 		});
