@@ -62,7 +62,7 @@ a.button:hover {
 </ul>
 <div id="opts">Options:
 </div>
-<span>[*] Sacrifice accuracy.</span>
+<span>[*] Sacrifice accuracy. &nbsp;[**] Sacrifice accuracy very much.</span>
 <div>
 Input (Paste text or drop file):<br />
 <textarea id="input" rows="14" spellcheck="false"></textarea><br />
@@ -88,9 +88,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
 	let local = location.protocol === "file:",
 		opts = [
 			{ name: "eval-atob", title: "Evaluate atob(...) as string" },
-			{ name: "eval-assign", label: "eval-assign [*]", title: "Evaluate assignment expression and replace variables with values if possible" },
+			{ name: "eval-assign", label: "eval-assign [**]", title: "Evaluate assignment expression and replace variables with values if possible" },
 			{ name: "remove-extra", label: "remove-extra [*]", title: "Remove metacode for obfuscator.io and jscrambler" },
 			{ name: "exclude", arg: "obfuscator-io", title: "don't detect obfuscator.io, speed up parsing of large obfuscated scripts other than obfuscator.io" },
+			{ name: "beautify", title: "replace object['propery'] with object.property" },
 			{ name: "beta", title: "there may or may not be a difference in output" },
 			{ name: "obfuscator-io-ignore-uri-malformed-error" },
 			{ name: "parser-option", arg: "allowReturnOutsideFunction", label: "allowReturnOutsideFunction", title: "babel parser option" },
