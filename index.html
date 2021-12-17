@@ -91,8 +91,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
 			{ name: "eval-assign", label: "eval-assign [**]", title: "Evaluate assignment expression and replace variables with values if possible" },
 			{ name: "remove-extra", label: "remove-extra [*]", title: "Remove metacode for obfuscator.io and jscrambler" },
 			{ name: "exclude", arg: "obfuscator-io", title: "don't detect obfuscator.io, speed up parsing of large obfuscated scripts other than obfuscator.io" },
-			{ name: "beautify", title: "replace object['propery'] with object.property" },
-			{ name: "beta", title: "there may or may not be a difference in output" },
 			{ name: "obfuscator-io-ignore-uri-malformed-error" },
 			{ name: "parser-option", arg: "allowReturnOutsideFunction", label: "allowReturnOutsideFunction", title: "babel parser option" },
 			{ name: "parser-option", arg: "sourceType=module", label: "sourceType=module", title: "babel parser option" },
@@ -144,7 +142,12 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 		}
 	});
 	d.getElementById("run").addEventListener("click", function(){
-		let opts = {}, code = input.value;
+		let opts, code = input.value, defaultOpts = {
+			"remove-intermediate": true,
+			"property-to-identifier": true,
+			"unflatten": true,
+		};
+		opts = Object.assign({}, defaultOpts, window.jsdfeOpts || {});
 		document.querySelectorAll('#opts > input').forEach(e=>{
 			const opt = e.opt;
 			if (e.type === "checkbox"){
@@ -164,12 +167,8 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 				}
 			}
 		});
-		opts["remove-intermediate"] = true;
-		output.value = "Start deobfuscating. See the console of the developer tools for the progress.";
-		if (window.jsdfeOpts){
-			opts = Object.assign({}, window.jsdfeOpts, opts);
-		}
 		console.log("using options:", opts);
+		output.value = "Start deobfuscating. See the console of the developer tools for the progress.";
 		setTimeout(function(){
 			try {
 				let res = decode(code, opts);
