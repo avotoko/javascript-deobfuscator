@@ -67,7 +67,7 @@ a.button:hover {
 Input (Paste text or drop file):<br />
 <textarea id="input" rows="14" spellcheck="false"></textarea><br />
 <button id="run">Deobfuscate</button>
-<a id="download" class="button" download="output.js">Download output</a>
+<a id="download" class="button" download="output.txt">Download output</a>
 <button id="copy">Copy output to clipboard</button>
 <button id="clear">Clear output</button>
 <button id="runCode" class="hide">Run code in vm(iframe)</button>
@@ -189,8 +189,7 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 	});
 	d.getElementById("download").addEventListener("click", function(ev){
 		let a = ev.target;
-		console.log(a);
-		a.href = URL.createObjectURL(new Blob([output.value],{type:"application/javascript"}));
+		a.href = URL.createObjectURL(new Blob([output.value],{type:"text/plain"}));
 	});
 	d.getElementById("clear").addEventListener("click", function(){
 		output.value = "";
