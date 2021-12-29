@@ -108,8 +108,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
 		}
 		classList.length >  0 && e.classList.add(...classList);
 		container.appendChild(e);
+		let input = e;
 		e = document.createElement("label");
 		e.for = id, e.textContent = label, e.title = opt.title || id;
+		type === "checkbox" && e.addEventListener("click", (ev)=> input.click());
 		container.appendChild(e);
 	});
 	if (local){
