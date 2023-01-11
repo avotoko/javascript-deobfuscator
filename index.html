@@ -62,7 +62,7 @@ a.button:hover {
 </ul>
 <div id="opts">Options:
 </div>
-<span>[*] Sacrifice accuracy. &nbsp;[**] Sacrifice accuracy very much.</span>
+<span>[*1] Sacrifice accuracy very much. &nbsp;[*2] Sacrifice accuracy. &nbsp;[*3] May generate duplicate names with global built-in names when target script running in other than the browser.</span>
 <div>
 Input (Paste text or drop file):<br />
 <textarea id="input" rows="14" spellcheck="false"></textarea><br />
@@ -88,9 +88,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
 	let local = location.protocol === "file:",
 		opts = [
 			{ name: "eval-atob", title: "Evaluate atob(...) as string" },
-			{ name: "eval-assign", label: "eval-assign [**]", title: "Evaluate assignment expression and replace variables with values if possible" },
-			{ name: "remove-extra", label: "remove-extra [*]", title: "Remove metacode for obfuscator.io and jscrambler" },
-			{ name: "remove", arg: "unref", label: "remove unref [*]", title: "Remove unreferenced variables" },
+			{ name: "eval-assign", label: "eval-assign [*1]", title: "Evaluate assignment expression and replace variables with values if possible" },
+			{ name: "remove-extra", label: "remove-extra [*2]", title: "Remove metacode for obfuscator.io and jscrambler" },
+			{ name: "remove", arg: "unref", label: "remove unref [*2]", title: "Remove unreferenced variables" },
+			{ name: "rename", label: "rename [*3]", title: "Rename hexadecimal identifier name starts with '_0x'" },
 			{ name: "exclude", arg: "obfuscator-io", title: "don't detect obfuscator.io, speed up parsing of large obfuscated scripts other than obfuscator.io" },
 			{ name: "obfuscator-io-ignore-uri-malformed-error" },
 			{ name: "parser-option", arg: "allowReturnOutsideFunction", label: "allowReturnOutsideFunction", title: "babel parser option" },
@@ -159,6 +160,9 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 					if (opt.arg){
 						opts[opt.name] = opts[opt.name] || "";
 						opts[opt.name] += "," + opt.arg;
+					}
+					else if (/^no-/.test(opt.name)){
+						opts[opt.name.substring(3)] = false;
 					}
 					else {
 						opts[opt.name] = true;
