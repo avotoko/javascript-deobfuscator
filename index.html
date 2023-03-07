@@ -50,6 +50,7 @@ a.button:hover {
 <body>
 <div>
 <span id="title">jsdfe: JavaScript Deobfuscator Full of Excuses</span>
+<span id="version"></span>
 <button id="hide-excuses">Hide/Show Excuses</button>
 </div>
 <ul id="excuses">
@@ -84,7 +85,8 @@ if (location.protocol !== "file:"){
 }
 document.addEventListener("DOMContentLoaded", ()=>{
 	let d = document;
-	let {decode} = window["sd-decoder"];
+	let {decode, version} = window["sd-decoder"];
+	document.getElementById("version").textContent = version;
 	let local = location.protocol === "file:",
 		opts = [
 			{ name: "eval-atob", title: "Evaluate atob(...) as string" },
