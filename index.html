@@ -13,9 +13,14 @@ body {
 }
 #opts {
 	width: 99%;
+	display: flex;
+    flex-flow: wrap;
 }
-#opts input {
-	margin-left: 1em;
+#opts .option + .option {
+	margin-left: 0.7em;
+}
+::placeholder {
+  color: darkgray;
 }
 textarea {
 	width: 99%;
@@ -93,7 +98,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 			{ name: "eval-assign", label: "eval-assign [*1]", title: "Evaluate assignment expression and replace variables with values if possible" },
 			{ name: "remove-extra", label: "remove-extra [*2]", title: "Remove metacode for obfuscator.io and jscrambler" },
 			{ name: "remove", arg: "unref", label: "remove unref [*2]", title: "Remove unreferenced variables" },
-			{ name: "rename", label: "rename [*3]", title: "Rename hexadecimal identifier name starts with '_0x'" },
+			{ name: "rename", type: "text", width: "10em", label: "Rename [*3] id matching:", placeholder: "^_0x (placeholder)", title: "Enter a pattern to rename."},
 			{ name: "exclude", arg: "obfuscator-io", title: "don't detect obfuscator.io, speed up parsing of large obfuscated scripts other than obfuscator.io" },
 			{ name: "obfuscator-io-ignore-uri-malformed-error" },
 			{ name: "parser-option", arg: "allowReturnOutsideFunction", label: "allowReturnOutsideFunction", title: "babel parser option" },
@@ -105,19 +110,26 @@ document.addEventListener("DOMContentLoaded", ()=>{
 	opts.forEach(opt=>{
 		let classList = [], id = opt.arg ? opt.name + "-" + opt.arg : opt.name,
 			label = opt.label || id, type = opt.type || "checkbox";
-		let e = document.createElement("input");
+		let optElem = document.createElement("div"),
+			e = document.createElement("input");
+		optElem.classList.add("option");
 		e.type = type, e.opt = opt, e.id = id;
 		switch (type){
-			case "checkbox": e.checked = !!opt.checked; break;
-			case "text": e.style.width = "2em"; opt.value && (e.value = opt.value); break;
+			case "checkbox": 
+				e.checked = !!opt.checked; break;
+			case "text": 
+				e.style.width = opt.width || "";
+				e.value = opt.value || "";
+				e.placeholder  = opt.placeholder || "";
+				break;
 		}
 		classList.length >  0 && e.classList.add(...classList);
-		container.appendChild(e);
 		let input = e;
 		e = document.createElement("label");
 		e.for = id, e.textContent = label, e.title = opt.title || id;
 		type === "checkbox" && e.addEventListener("click", (ev)=> input.click());
-		container.appendChild(e);
+		type === "text" ? optElem.append(e, input) :  optElem.append(input, e);
+		container.appendChild(optElem);
 	});
 	if (local){
 		d.getElementById("runCode").classList.remove("hide");
@@ -155,7 +167,7 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 			"unflatten": true,
 		};
 		opts = Object.assign({}, defaultOpts, window.jsdfeOpts || {});
-		document.querySelectorAll('#opts > input').forEach(e=>{
+		document.querySelectorAll('#opts input').forEach(e=>{
 			const opt = e.opt;
 			if (e.type === "checkbox"){
 				if (e.checked){
