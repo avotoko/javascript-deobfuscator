@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 			{ name: "parser-option", arg: "allowReturnOutsideFunction", label: "allowReturnOutsideFunction", title: "babel parser option" },
 			{ name: "parser-option", arg: "allowAwaitOutsideFunction", label: "allowAwaitOutsideFunction", title: "babel parser option" },
 			{ name: "parser-option", arg: "sourceType=module", label: "sourceType=module", title: "babel parser option" },
-			{ name: "brute", title: "use when instructed to do so by console output" },
+			{ name: "define-global-in-vm", title: "define 'global' in VM and initialize it with window object." },
 		];
 	let container = document.getElementById("opts");
 	opts.forEach(opt=>{
