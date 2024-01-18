@@ -198,7 +198,7 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 				d.querySelectorAll(".jsdfe-vm").forEach(e=>e.remove());
 			}
 			catch(e){
-				output.value = (e.type ? e.type : "error:") + " " + e.message;
+				output.value = e.name + " " + e.message;
 				d.querySelectorAll(".jsdfe-vm").forEach(e=>e.remove());
 				throw e;
 			}
