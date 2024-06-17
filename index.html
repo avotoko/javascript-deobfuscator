@@ -165,6 +165,7 @@ console.log(a); // 'eval-assign' will replace variables with literals if possibl
 			"remove-intermediate": true,
 			"property-to-identifier": true,
 			"unflatten": true,
+			"strict": true,
 		};
 		opts = Object.assign({}, defaultOpts, window.jsdfeOpts || {});
 		document.querySelectorAll('#opts input').forEach(e=>{
